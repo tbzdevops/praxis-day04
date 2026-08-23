@@ -13,13 +13,18 @@ hinzu.
 
 ## Ordnerstruktur
 
-Die leeren Ordner geben die erwartete Struktur vor. Halte dich daran —
-die automatische Pruefung sucht die Dateien genau dort.
+Alle Dateien gehoeren ins **Wurzel-Verzeichnis** dieses Repos bzw. in
+`.github/workflows/` — nur dort fuehrt GitHub Actions Workflows aus. Lege
+keine Unterordner pro Auftrag an; die automatische Pruefung sucht die
+Dateien genau hier.
 
 ```
-tag04/auftrag01-hello-ci/.github/workflows/
-tag04/auftrag02-build-test/.github/workflows/
-tag04/auftrag03-lint-docker/.github/workflows/
+.github/workflows/hello-ci.yml        # Auftrag 1
+.github/workflows/ci-build-test.yml   # Auftrag 2, in Auftrag 3 erweitert
+app.py                                # Auftrag 2
+test_app.py                           # Auftrag 2
+requirements.txt                      # Auftrag 2 (+ flake8 in Auftrag 3)
+Dockerfile                            # Auftrag 3
 ```
 
 ## Aufgaben
@@ -28,7 +33,7 @@ tag04/auftrag03-lint-docker/.github/workflows/
 
 Richte den ersten CI-Workflow ein, der bei jeder Code-Aenderung laeuft.
 
-- Lege `tag04/auftrag01-hello-ci/.github/workflows/hello-ci.yml` an.
+- Lege `.github/workflows/hello-ci.yml` an.
 - Trigger: `on: [push]`, Runner: `runs-on: ubuntu-latest`.
 - Schritte: `actions/checkout@v4` und ein `run`-Schritt, der
   `Hello Continuous Integration!` ausgibt.
@@ -37,10 +42,10 @@ Richte den ersten CI-Workflow ein, der bei jeder Code-Aenderung laeuft.
 
 Erweitere die Pipeline um einen echten Build- und Test-Lauf.
 
-- Lege unter `tag04/auftrag02-build-test/` eine kleine Python-Anwendung an:
+- Lege im Wurzel-Verzeichnis eine kleine Python-Anwendung an:
   `app.py` (z. B. eine Funktion `add`), `test_app.py` mit einem
   pytest-Testfall und `requirements.txt` mit `pytest`.
-- Lege `tag04/auftrag02-build-test/.github/workflows/ci-build-test.yml` an:
+- Lege `.github/workflows/ci-build-test.yml` an:
   Checkout, `actions/setup-python@v5`,
   `pip install -r requirements.txt` und `pytest`.
 - Probiere den roten Build aus: aendere die Erwartung im Test auf einen
@@ -48,11 +53,12 @@ Erweitere die Pipeline um einen echten Build- und Test-Lauf.
 
 ### Auftrag 3 — Erweiterte CI-Pipeline: Linter und Docker-Build (optional)
 
-Ergaenze unter `tag04/auftrag03-lint-docker/` Linter und Image-Build.
+Erweitere die Pipeline aus Auftrag 2 um Linter und Image-Build — in
+derselben Workflow-Datei `.github/workflows/ci-build-test.yml`.
 
-- `app.py`, `test_app.py`, `requirements.txt` (zusaetzlich `flake8`).
-- Ein `Dockerfile`, das die Anwendung startet.
-- Ein Workflow mit `flake8 .`, `pytest` und `docker build -t myapp:latest .`
+- `requirements.txt` zusaetzlich um `flake8` ergaenzen.
+- Ein `Dockerfile` im Wurzel-Verzeichnis, das die Anwendung startet.
+- Im Workflow `flake8 .` vor und `docker build -t myapp:latest .` nach den Tests.
 
 Dieser Auftrag ist in der Tagesplanung als optional gekennzeichnet und wird
 deshalb nicht automatisch bewertet.
@@ -68,7 +74,7 @@ nichts von Hand pflegen — beim naechsten Push wird die Liste ueberschrieben.
 **Fortschritt: 0 / 13 Kriterien erfüllt** ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ — Stand: 2026-08-23 22:08 UTC.
 <!-- /c50:progress -->
 
-- [ ] ⬜ Auftrag 1: Workflow vorhanden (tag04/auftrag01-hello-ci/.github/workflows/)
+- [ ] ⬜ Auftrag 1: Hello-CI-Workflow vorhanden (.github/workflows/)
 - [ ] ⬜ Auftrag 1: Trigger on: push konfiguriert
 - [ ] ⬜ Auftrag 1: Runner ubuntu-latest gesetzt
 - [ ] ⬜ Auftrag 1: Checkout-Action vorhanden (actions/checkout)
@@ -77,7 +83,7 @@ nichts von Hand pflegen — beim naechsten Push wird die Liste ueberschrieben.
 - [ ] ⬜ Auftrag 2: test_app.py vorhanden
 - [ ] ⬜ Auftrag 2: test_app.py enthält einen pytest-Test (def test_)
 - [ ] ⬜ Auftrag 2: requirements.txt enthält pytest
-- [ ] ⬜ Auftrag 2: Workflow vorhanden (tag04/auftrag02-build-test/.github/workflows/)
+- [ ] ⬜ Auftrag 2: Build/Test-Workflow vorhanden (.github/workflows/)
 - [ ] ⬜ Auftrag 2: Python-Setup im Workflow (actions/setup-python)
 - [ ] ⬜ Auftrag 2: Abhängigkeiten werden installiert (pip install -r requirements.txt)
 - [ ] ⬜ Auftrag 2: Tests werden ausgeführt (pytest)
@@ -115,5 +121,5 @@ letzter Run → Job *Abnahmekriterien pruefen*.
 ## Musterloesung
 
 Nach dem Unterricht findest du die Musterloesung im Repository
-[`tbzdevops/musterloesungen-praxisauftraege`](https://github.com/tbzdevops/musterloesungen-praxisauftraege/tree/day_4_solution/tag04)
+[`tbzdevops/musterloesungen-praxisauftraege`](https://github.com/tbzdevops/musterloesungen-praxisauftraege/tree/day_4_solution)
 auf dem Branch `day_4_solution`.
